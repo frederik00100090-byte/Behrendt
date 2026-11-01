@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schreinerei Behrendt — Küchen, Möbel, Türen und Treppen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --spruce:#12201b;
+    --spruce-2:#192a24;
+    --spruce-3:#21352d;
+    --linen:#ece7d8;
+    --linen-dim:#a9b3a8;
+    --maple:#e0b95a;
+    --maple-bright:#efce7e;
+    --sage:#8fa89a;
+    --line:#2f463d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+  }
+  body{background:var(--spruce);color:var(--linen);font-family:'DM Sans',sans-serif;line-height:1.65;overflow-x:hidden;}
+  h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-0.005em;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--maple);outline-offset:3px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  .mono{font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--maple);letter-spacing:0.06em;}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.19,1,.22,1), transform .8s cubic-bezier(.19,1,.22,1);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:20px 36px;}
+  nav .brand{font-family:'DM Serif Display',serif;font-size:1.25rem;display:flex;align-items:center;gap:10px;text-decoration:none;}
+  nav ul{display:flex;gap:4px;list-style:none;background:rgba(18,32,27,0.7);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:30px;padding:5px;}
+  nav ul a{display:block;text-decoration:none;color:var(--linen-dim);font-size:0.84rem;padding:9px 18px;border-radius:24px;transition:background .25s,color .25s;}
+  nav ul a.active{background:var(--maple);color:var(--spruce);font-weight:600;}
+  nav .cta{background:var(--linen);color:var(--spruce);padding:10px 20px;border-radius:30px;text-decoration:none;font-size:0.82rem;font-weight:600;}
+
+  /* Seiten */
+  .page{display:none;}
+  .page.active{display:block;animation:pagein .55s cubic-bezier(.19,1,.22,1);}
+  @keyframes pagein{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .page-top{padding-top:150px;}
+  section{padding:80px 0;}
+
+  .btn-row{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn-maple{background:var(--maple);color:var(--spruce);padding:14px 28px;border-radius:3px;text-decoration:none;font-weight:600;font-size:0.92rem;transition:background .2s, transform .2s;display:inline-block;}
+  .btn-maple:hover{background:var(--maple-bright);transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--line);padding:14px 28px;border-radius:3px;text-decoration:none;color:var(--linen);font-size:0.92rem;display:inline-block;}
+  .btn-ghost:hover{border-color:var(--maple);}
+
+  /* ================= STARTSEITE ================= */
+  .home{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:center;padding:130px 0 70px;overflow:hidden;}
+  .stairs-bg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+  .home-inner{position:relative;z-index:2;max-width:1180px;width:100%;}
+  .home h1{font-size:clamp(3rem,8vw,6.6rem);line-height:0.98;margin:22px 0 28px;max-width:900px;}
+  .home h1 em{color:var(--maple);}
+  .home p.lead{color:var(--linen-dim);font-size:1.12rem;max-width:480px;margin-bottom:36px;}
+  .scroll-cue{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;}
+  .scroll-cue span{font-size:0.66rem;color:var(--linen-dim);font-family:'DM Mono',monospace;letter-spacing:0.08em;}
+  .scroll-cue .line{width:1px;height:32px;background:linear-gradient(var(--maple),transparent);animation:drop 1.8s ease-in-out infinite;}
+  @keyframes drop{0%{opacity:0;transform:scaleY(.3);transform-origin:top;}50%{opacity:1;transform:scaleY(1);transform-origin:top;}100%{opacity:0;transform:scaleY(.3);transform-origin:bottom;}}
+
+  /* Rundgang (horizontal) */
+  .tour{padding:90px 0 70px;background:var(--spruce-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .tour-head{max-width:620px;margin:0 auto 40px;padding:0 32px;}
+  .tour-head h2{font-size:clamp(2rem,3.6vw,2.8rem);}
+  .tour-head p{color:var(--linen-dim);margin-top:12px;}
+  .tour-track{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:32px;padding:10px 32px 26px;scrollbar-width:thin;scrollbar-color:var(--maple) transparent;}
+  .tour-track::-webkit-scrollbar{height:6px;}
+  .tour-track::-webkit-scrollbar-thumb{background:var(--maple);border-radius:10px;}
+  .tour-panel{scroll-snap-align:start;flex:0 0 min(330px,78vw);background:var(--spruce);border:1px solid var(--line);border-radius:4px;padding:28px 24px;text-decoration:none;display:flex;flex-direction:column;gap:14px;transition:border-color .25s, transform .25s;}
+  .tour-panel:hover{border-color:var(--maple);transform:translateY(-4px);}
+  .tour-panel svg{width:100%;height:120px;}
+  .tour-panel h3{font-size:1.5rem;}
+  .tour-panel p{color:var(--linen-dim);font-size:0.9rem;}
+  .tour-panel .more{color:var(--maple);font-size:0.82rem;font-weight:600;margin-top:auto;}
+  .tour-hint{padding:0 32px;color:var(--linen-dim);font-size:0.76rem;font-family:'DM Mono',monospace;}
+
+  /* Über uns */
+  .about-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:70px;align-items:start;}
+  .about-grid h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.1;}
+  .about-grid p{color:var(--linen-dim);margin-bottom:16px;}
+  .facts{margin-top:30px;border-top:1px solid var(--line);}
+  .facts div{display:flex;gap:16px;padding:13px 0;border-bottom:1px solid var(--line);font-size:0.92rem;}
+  .facts dt{width:110px;color:var(--linen-dim);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.03em;padding-top:2px;}
+
+  /* Teaser */
+  .teaser-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;}
+  .teaser-tile{display:flex;flex-direction:column;justify-content:flex-end;gap:10px;text-decoration:none;background:var(--spruce-2);border:1px solid var(--line);border-radius:4px;padding:32px;min-height:190px;transition:border-color .25s, transform .25s;}
+  .teaser-tile:hover{border-color:var(--maple);transform:translateY(-3px);}
+  .teaser-tile h3{font-size:1.5rem;}
+  .teaser-tile p{color:var(--linen-dim);font-size:0.9rem;max-width:34ch;}
+  .teaser-tile .t-link{font-size:0.82rem;font-weight:600;color:var(--maple);}
+  .teaser-tile.t-big{grid-row:span 2;padding:44px;}
+  .teaser-tile.t-big h3{font-size:2.3rem;line-height:1.1;}
+  .teaser-tile.light{background:var(--linen);border-color:var(--linen);}
+  .teaser-tile.light h3{color:var(--spruce);}
+  .teaser-tile.light .t-link{color:var(--spruce-3);}
+
+  /* ================= LEISTUNGEN ================= */
+  .page-title h1{font-size:clamp(3rem,7vw,5.4rem);line-height:1;}
+  .page-title p{color:var(--linen-dim);max-width:520px;margin-top:18px;font-size:1.05rem;}
+  .stair-div{display:block;width:100%;height:46px;margin:50px 0 10px;}
+
+  .svc{display:grid;grid-template-columns:0.8fr 1.2fr;gap:60px;padding:60px 0;border-top:1px solid var(--line);align-items:start;}
+  .svc h2{font-size:clamp(2rem,3.6vw,2.8rem);}
+  .svc .txt p{color:var(--linen-dim);max-width:52ch;margin-bottom:14px;}
+  .svc.flip{grid-template-columns:1.2fr 0.8fr;}
+  .svc.flip .txt{order:2;}
+
+  /* Küchenform */
+  .kf{background:var(--spruce-2);border:1px solid var(--line);border-radius:6px;padding:26px;}
+  .kf-btns{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .kf-btn{background:none;border:1px solid var(--line);color:var(--linen-dim);padding:8px 16px;border-radius:30px;font-size:0.82rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .kf-btn.active{background:var(--maple);border-color:var(--maple);color:var(--spruce);font-weight:600;}
+  .kf svg{width:100%;height:auto;max-height:260px;background:var(--spruce);border:1px solid var(--line);border-radius:4px;}
+  .kf rect.c{fill:var(--maple);opacity:.85;transition:all .45s cubic-bezier(.19,1,.22,1);}
+  .kf-cap{margin-top:14px;font-size:0.9rem;color:var(--linen-dim);min-height:3em;}
+  .kf-note{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--sage);margin-top:8px;}
+
+  /* Türen (helle Fläche) */
+  .doors{background:var(--linen);color:var(--spruce);}
+  .doors .wrap{display:grid;grid-template-columns:1.2fr 0.8fr;gap:60px;align-items:center;}
+  .doors h2{font-size:clamp(2.4rem,5vw,4.2rem);line-height:1.04;color:var(--spruce);}
+  .doors p{color:#3d4f46;max-width:46ch;margin-top:18px;}
+  .doors svg{width:100%;max-width:300px;justify-self:center;}
+
+  /* Planung Stepper */
+  .plan{background:var(--spruce-2);border:1px solid var(--line);border-radius:6px;padding:30px;}
+  .sp-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+  .sp-tab{background:none;border:1px solid var(--line);color:var(--linen-dim);padding:9px 16px;border-radius:30px;font-size:0.84rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .sp-tab.active{background:var(--maple);border-color:var(--maple);color:var(--spruce);font-weight:600;}
+  .sp-body h3{font-size:1.7rem;margin-bottom:8px;}
+  .sp-body p{color:var(--linen-dim);max-width:48ch;min-height:4.8em;}
+  .sp-bar{height:3px;background:var(--line);border-radius:2px;margin-top:18px;overflow:hidden;}
+  .sp-bar i{display:block;height:100%;width:25%;background:var(--maple);transition:width .45s cubic-bezier(.19,1,.22,1);}
+  .sp-note{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--sage);margin-top:14px;}
+
+  /* ================= PROJEKTE ================= */
+  .filters{display:flex;gap:10px;margin:36px 0 30px;flex-wrap:wrap;}
+  .filter-btn{background:none;border:1px solid var(--line);color:var(--linen-dim);padding:9px 18px;border-radius:30px;font-size:0.84rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .filter-btn.active{background:var(--maple);border-color:var(--maple);color:var(--spruce);font-weight:600;}
+  .projects{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;grid-auto-flow:dense;}
+  .project{background:var(--spruce-2);border:1px solid var(--line);border-radius:4px;overflow:hidden;cursor:pointer;text-align:left;color:inherit;font-family:inherit;padding:0;transition:border-color .25s, transform .25s;}
+  .project:hover{border-color:var(--maple);transform:translateY(-3px);}
+  .project.hidden{display:none;}
+  .project .pv{position:relative;aspect-ratio:4/3;background:#192a24;}
+  .project .pv svg{position:absolute;inset:0;width:100%;height:100%;}
+  .project .pv span{position:absolute;left:12px;bottom:12px;font-family:'DM Mono',monospace;font-size:0.64rem;background:rgba(18,32,27,0.8);padding:4px 9px;border-radius:3px;color:var(--linen-dim);}
+  .project .pt{padding:14px 18px 18px;}
+  .project h4{font-family:'DM Serif Display',serif;font-weight:400;font-size:1.2rem;margin-bottom:2px;}
+  .project .cat{color:var(--maple);font-size:0.74rem;font-family:'DM Mono',monospace;}
+  .w-big{grid-column:span 4;grid-row:span 2;}
+  .w-big .pv{aspect-ratio:auto;height:100%;min-height:300px;}
+  .w-2{grid-column:span 2;}
+  .w-3{grid-column:span 3;}
+  .demo-note{margin-top:24px;color:var(--linen-dim);font-size:0.8rem;}
+
+  dialog{margin:auto;background:var(--spruce-2);color:var(--linen);border:1px solid var(--maple);border-radius:6px;padding:0;max-width:min(720px,92vw);width:100%;}
+  dialog::backdrop{background:rgba(8,14,12,0.8);}
+  dialog .d-art{aspect-ratio:16/9;background:var(--spruce);}
+  dialog .d-art svg{width:100%;height:100%;}
+  dialog .d-body{padding:24px 28px 28px;}
+  dialog h3{font-size:1.8rem;margin-bottom:4px;}
+  dialog .d-cat{color:var(--maple);font-family:'DM Mono',monospace;font-size:0.74rem;margin-bottom:12px;}
+  dialog .d-note{color:var(--linen-dim);font-size:0.88rem;}
+  .d-close{position:absolute;top:12px;right:12px;background:rgba(18,32,27,0.85);border:1px solid var(--line);color:var(--linen);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1rem;z-index:2;}
+
+  /* ================= KONTAKT ================= */
+  .connect-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;}
+  .connect-info h1{font-size:clamp(2.6rem,5vw,4rem);line-height:1.02;margin-bottom:18px;}
+  .connect-info p{color:var(--linen-dim);max-width:420px;margin-bottom:28px;}
+  .info-list{list-style:none;}
+  .info-list li{display:flex;gap:16px;padding:14px 0;border-top:1px solid var(--line);font-size:0.94rem;}
+  .info-list li:last-child{border-bottom:1px solid var(--line);}
+  .info-list .label{width:100px;flex-shrink:0;color:var(--linen-dim);font-size:0.76rem;text-transform:uppercase;letter-spacing:0.03em;padding-top:2px;}
+  .find{margin-top:26px;color:var(--linen-dim);font-size:0.9rem;max-width:42ch;}
+
+  .stepper{display:flex;gap:8px;margin-bottom:26px;}
+  .step-dot{flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden;}
+  .step-dot i{display:block;height:100%;width:0;background:var(--maple);transition:width .4s;}
+  .form-card{background:var(--spruce-2);border:1px solid var(--line);border-radius:6px;padding:32px;}
+  .f-step{display:none;}
+  .f-step.active{display:block;}
+  .chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+  .chip{border:1px solid var(--line);background:var(--spruce);border-radius:4px;padding:14px;cursor:pointer;font-size:0.88rem;text-align:left;color:var(--linen-dim);font-family:'DM Sans',sans-serif;}
+  .chip.selected{border-color:var(--maple);color:var(--linen);background:var(--spruce-3);}
+  .form-card label{display:block;font-size:0.8rem;color:var(--linen-dim);margin-bottom:6px;margin-top:16px;}
+  .form-card label:first-child{margin-top:0;}
+  .form-card input, .form-card textarea{width:100%;background:var(--spruce);border:1px solid var(--line);color:var(--linen);padding:11px 13px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:0.92rem;}
+  .f-actions{display:flex;justify-content:space-between;margin-top:26px;}
+  .btn-sm{background:var(--maple);color:var(--spruce);border:none;padding:11px 24px;border-radius:4px;font-weight:600;font-size:0.88rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .btn-sm.ghost{background:none;border:1px solid var(--line);color:var(--linen-dim);}
+  .btn-sm:disabled{opacity:0.4;cursor:not-allowed;}
+  .summary-box{background:var(--spruce);border:1px solid var(--line);border-radius:4px;padding:18px;font-size:0.88rem;color:var(--linen-dim);margin-bottom:18px;}
+  .summary-box strong{color:var(--linen);}
+  .success{text-align:center;padding:20px 0;}
+  .success .mark{width:52px;height:52px;border-radius:50%;background:var(--maple);color:var(--spruce);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.4rem;}
+
+  footer{padding:36px 0;border-top:1px solid var(--line);}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:0.8rem;color:var(--linen-dim);}
+  footer .foot-nav a{text-decoration:none;}
+  footer .foot-nav a:hover{color:var(--maple);}
+
+  .demo-tag{position:fixed;bottom:16px;right:16px;background:var(--linen);color:var(--spruce);font-family:'DM Mono',monospace;font-size:0.62rem;padding:7px 11px;border-radius:3px;z-index:60;letter-spacing:0.03em;}
+
+  @media(max-width:900px){
+    .about-grid,.svc,.svc.flip,.doors .wrap,.connect-grid{grid-template-columns:1fr;gap:34px;}
+    .svc.flip .txt{order:0;}
+    .teaser-grid{grid-template-columns:1fr;}
+    .teaser-tile.t-big{grid-row:auto;padding:32px;}
+    .projects{grid-template-columns:1fr 1fr;}
+    .w-big,.w-2,.w-3{grid-column:span 2;grid-row:auto;}
+    .w-big .pv{aspect-ratio:4/3;height:auto;min-height:0;}
+    .chip-grid{grid-template-columns:1fr;}
+    /* mobile Tab-Leiste */
+    nav ul{display:flex;position:fixed;bottom:12px;left:12px;right:12px;justify-content:space-between;z-index:55;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+    nav ul li{flex:1;}
+    nav ul a{text-align:center;padding:11px 4px;font-size:0.78rem;}
+    footer{padding-bottom:96px;}
+    .demo-tag{bottom:82px;}
+    .page-top{padding-top:110px;}
+    .scroll-cue{display:none;}
+  }
+  @media(max-width:520px){ .projects{grid-template-columns:1fr;} .w-big,.w-2,.w-3{grid-column:span 1;} }
+</style>
+</head>
+<body>
+
+<div class="demo-tag">CINEMATIC DEMO-ENTWURF — NICHT VERÖFFENTLICHT</div>
+
+<nav id="mainnav">
+  <a class="brand" href="#startseite">
+    <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M3 24 H10 V18 H16 V12 H22 V6 H26" fill="none" stroke="#e0b95a" stroke-width="2.2" stroke-linejoin="round"/></svg>
+    Behrendt
+  </a>
+  <ul>
+    <li><a href="#startseite" class="active">Startseite</a></li>
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#projekte">Projekte</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <a href="#kontakt" class="cta">Projekt anfragen</a>
+</nav>
+
+<main>
+
+<!-- ================= STARTSEITE ================= -->
+<div class="page active" data-page="startseite">
+  <section class="home">
+    <svg class="stairs-bg" id="stairsbg" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <g fill="none" stroke="#2f463d" stroke-width="2">
+        <path d="M-20 860 H260 V740 H520 V620 H780 V500 H1040 V380 H1300 V260 H1440"/>
+        <path d="M-20 905 H300 V785 H560 V665 H820 V545 H1080 V425 H1340 V305 H1440" opacity=".5"/>
+      </g>
+      <rect x="1010" y="100" width="170" height="250" fill="none" stroke="#e0b95a" stroke-width="2" opacity=".35"/>
+      <circle cx="1148" cy="228" r="5" fill="#e0b95a" opacity=".5"/>
+    </svg>
+    <div class="wrap home-inner">
+      <span class="mono">SCHREINEREI BEHRENDT — GERATSREUTE BEI FRONREUTE</span>
+      <h1 class="reveal">Räume, in denen man <em>ankommt.</em></h1>
+      <p class="lead reveal">Küchen, Möbel, Türen und Treppen aus der eigenen Werkstatt — handwerkliche Güte, Tradition und zeitloses Design, als Familienbetrieb.</p>
+      <div class="btn-row reveal">
+        <a href="#kontakt" class="btn-maple">Projekt besprechen</a>
+        <a href="#leistungen" class="btn-ghost">Leistungen entdecken</a>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>SCROLLEN</span><div class="line"></div></div>
+  </section>
+
+  <section class="tour">
+    <div class="tour-head reveal">
+      <h2>Ein Rundgang durchs Haus.</h2>
+      <p>Wischen Sie durch die vier Bereiche, in denen Schreinerei Behrendt arbeitet.</p>
+    </div>
+    <div class="tour-track" tabindex="0" aria-label="Rundgang durchs Haus, seitlich scrollbar">
+      <a href="#leistungen" class="tour-panel">
+        <svg viewBox="0 0 240 120" aria-hidden="true"><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="20" y="62" width="200" height="40"/><line x1="20" y1="80" x2="220" y2="80" stroke="#2f463d"/><rect x="95" y="14" width="50" height="30"/><circle cx="60" cy="40" r="10"/></g></svg>
+        <h3>Küche</h3><p>Individuelle Einzelstücke aus der eigenen Werkstatt, ganz nach Ihren Wünschen.</p><span class="more">Mehr zu Küchen</span>
+      </a>
+      <a href="#leistungen" class="tour-panel">
+        <svg viewBox="0 0 240 120" aria-hidden="true"><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="30" y="20" width="180" height="84"/><line x1="30" y1="48" x2="210" y2="48" stroke="#2f463d"/><line x1="30" y1="76" x2="210" y2="76" stroke="#2f463d"/><line x1="120" y1="20" x2="120" y2="104" stroke="#2f463d"/></g></svg>
+        <h3>Wohnen</h3><p>Inneneinrichtung, die so gestaltet ist, wie es Ihren individuellen Wünschen entspricht.</p><span class="more">Mehr zu Möbeln</span>
+      </a>
+      <a href="#leistungen" class="tour-panel">
+        <svg viewBox="0 0 240 120" aria-hidden="true"><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="85" y="8" width="70" height="106"/><rect x="95" y="20" width="50" height="38" stroke="#2f463d"/><rect x="95" y="66" width="50" height="38" stroke="#2f463d"/><circle cx="146" cy="64" r="3" fill="#e0b95a"/></g></svg>
+        <h3>Eingang</h3><p>Türen sind das Gesicht eines Hauses — geben Sie Ihrem Haus eines, das zu Ihnen passt.</p><span class="more">Mehr zu Türen</span>
+      </a>
+      <a href="#leistungen" class="tour-panel">
+        <svg viewBox="0 0 240 120" aria-hidden="true"><path d="M14 108 H60 V88 H106 V68 H152 V48 H198 V28 H228" fill="none" stroke="#e0b95a" stroke-width="2.4" stroke-linejoin="round"/></svg>
+        <h3>Treppe</h3><p>Treppen, die Etagen verbinden und zum Charakter Ihres Hauses passen.</p><span class="more">Mehr zu Treppen</span>
+      </a>
+    </div>
+    <div class="tour-hint">← seitlich scrollen oder wischen →</div>
+  </section>
+
+  <section>
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <h2>Ein Familienbetrieb, dem Ihr Wohlbefinden wichtig ist.</h2>
+      </div>
+      <div class="reveal">
+        <p>Handwerkliche Güte, Tradition und modernes, zeitloses Design zu vereinen — das ist das Ziel der Schreinerei Behrendt. Im Familienunternehmen steht die Zufriedenheit der Kunden an oberster Stelle.</p>
+        <p>Ein Zuhause soll Ruhe und Geborgenheit geben. Deshalb wird Ihr Wohnraum so gestaltet, dass Sie sich dort rundum wohlfühlen.</p>
+        <dl class="facts">
+          <div><dt>Inhaber</dt><dd>Tischlermeister Hubert Behrendt</dd></div>
+          <div><dt>Werkstatt</dt><dd>Geratsreute 5, 88273 Fronreute</dd></div>
+          <div><dt>Telefon</dt><dd>07505 1375</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="teaser-grid">
+        <a href="#leistungen" class="teaser-tile t-big reveal">
+          <h3>Küchen, Möbel, Türen und Treppen</h3>
+          <p>Alles, was die Werkstatt für Ihr Zuhause fertigt — im Überblick und mit Planungshilfen zum Ausprobieren.</p>
+          <span class="t-link">Leistungen ansehen</span>
+        </a>
+        <a href="#projekte" class="teaser-tile reveal">
+          <h3>Projekte</h3>
+          <span class="t-link">Beispiele ansehen</span>
+        </a>
+        <a href="#kontakt" class="teaser-tile light reveal">
+          <h3>Projekt besprechen</h3>
+          <span class="t-link">Anfrage starten</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= LEISTUNGEN ================= -->
+<div class="page" data-page="leistungen">
+  <section class="page-top" style="padding-bottom:0;">
+    <div class="wrap page-title reveal">
+      <h1>Leistungen</h1>
+      <p>Vier Bereiche aus der eigenen Werkstatt in Geratsreute — von der Planung bis zum fertigen Stück.</p>
+      <svg class="stair-div" viewBox="0 0 1100 46" preserveAspectRatio="none" aria-hidden="true"><path d="M0 44 H220 V33 H440 V22 H660 V11 H880 V2 H1100" fill="none" stroke="#2f463d" stroke-width="2"/></svg>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <!-- Küchen -->
+    <div class="svc">
+      <div class="txt reveal">
+        <h2>Küchen</h2>
+        <p>Individuelle Küchen aus der eigenen Werkstatt: Jede ist ein Einzelstück, ganz nach den Wünschen der Kunden gefertigt.</p>
+        <p>Probieren Sie rechts aus, welche Grundform zu Ihrem Raum passen könnte.</p>
+      </div>
+      <div class="kf reveal">
+        <div class="kf-btns" id="kfBtns">
+          <button class="kf-btn" data-k="einzeilig">Einzeilig</button>
+          <button class="kf-btn" data-k="zweizeilig">Zweizeilig</button>
+          <button class="kf-btn active" data-k="l">L-Form</button>
+          <button class="kf-btn" data-k="u">U-Form</button>
+          <button class="kf-btn" data-k="insel">Mit Insel</button>
+        </div>
+        <svg viewBox="0 0 300 200" id="kfSvg" role="img" aria-label="Schematische Küchen-Grundform">
+          <rect x="10" y="10" width="280" height="180" fill="none" stroke="#2f463d" stroke-width="2"/>
+          <g id="kfG"></g>
+        </svg>
+        <p class="kf-cap" id="kfCap"></p>
+        <p class="kf-note">SCHEMA ZUR ORIENTIERUNG — JEDE KÜCHE WIRD INDIVIDUELL GEPLANT</p>
+      </div>
+    </div>
+
+    <!-- Möbel -->
+    <div class="svc flip">
+      <div class="txt reveal">
+        <h2>Möbel</h2>
+        <p>Die Inneneinrichtung ist ein Teil unseres Lebens. Die Schreinerei hilft Ihnen, sie so zu gestalten, wie es Ihren individuellen Wünschen entspricht.</p>
+        <p>Vom einzelnen Möbelstück bis zur durchgehenden Einrichtung — gefertigt für Ihren Raum.</p>
+      </div>
+      <div class="reveal">
+        <svg viewBox="0 0 520 260" style="width:100%;height:auto;background:var(--spruce-2);border:1px solid var(--line);border-radius:6px;" aria-hidden="true">
+          <g fill="none" stroke="#e0b95a" stroke-width="2">
+            <rect x="60" y="50" width="400" height="150"/>
+            <line x1="60" y1="100" x2="460" y2="100" stroke="#2f463d"/>
+            <line x1="60" y1="150" x2="460" y2="150" stroke="#2f463d"/>
+            <line x1="193" y1="50" x2="193" y2="200" stroke="#2f463d"/>
+            <line x1="326" y1="50" x2="326" y2="200" stroke="#2f463d"/>
+            <line x1="80" y1="200" x2="80" y2="232"/>
+            <line x1="440" y1="200" x2="440" y2="232"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Türen & Treppen (helle Fläche) -->
+  <section class="doors">
+    <div class="wrap">
+      <div class="reveal">
+        <h2>Türen sind das Gesicht eines Hauses.</h2>
+        <p>Geben auch Sie Ihrem Haus ein neues Gesicht, das zu Ihnen passt — mit Türen und Treppen aus der Schreinerei Behrendt.</p>
+      </div>
+      <svg viewBox="0 0 240 300" class="reveal" aria-hidden="true">
+        <g fill="none" stroke="#12201b" stroke-width="2.6">
+          <rect x="60" y="20" width="120" height="260"/>
+          <rect x="76" y="40" width="88" height="92"/>
+          <rect x="76" y="148" width="88" height="116"/>
+          <circle cx="162" cy="150" r="4" fill="#12201b"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <!-- Planung -->
+    <div class="svc">
+      <div class="txt reveal">
+        <h2>Planung</h2>
+        <p>Gute Räume beginnen mit guter Planung. Klicken Sie durch die vier Schritte eines typischen Projekts.</p>
+      </div>
+      <div class="plan reveal" id="planStepper">
+        <div class="sp-tabs" role="tablist" aria-label="Projektschritte">
+          <button class="sp-tab active" role="tab" aria-selected="true" data-i="0">1 Gespräch</button>
+          <button class="sp-tab" role="tab" aria-selected="false" data-i="1">2 Planung</button>
+          <button class="sp-tab" role="tab" aria-selected="false" data-i="2">3 Werkstatt</button>
+          <button class="sp-tab" role="tab" aria-selected="false" data-i="3">4 Einbau</button>
+        </div>
+        <div class="sp-body">
+          <h3 id="spTitle"></h3>
+          <p id="spText"></p>
+        </div>
+        <div class="sp-bar"><i id="spBar"></i></div>
+        <p class="sp-note">TYPISCHER ABLAUF — GENAUE SCHRITTE BESPRICHT DIE SCHREINEREI MIT IHNEN</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PROJEKTE ================= -->
+<div class="page" data-page="projekte">
+  <section class="page-top">
+    <div class="wrap">
+      <div class="page-title reveal">
+        <h1>Projekte</h1>
+        <p>Beispielhafte Projektkarten — so könnten echte Referenzfotos später präsentiert werden. Antippen für die große Ansicht.</p>
+      </div>
+      <div class="filters reveal">
+        <button class="filter-btn active" data-filter="alle">Alle</button>
+        <button class="filter-btn" data-filter="kueche">Küchen</button>
+        <button class="filter-btn" data-filter="moebel">Möbel</button>
+        <button class="filter-btn" data-filter="tuer">Türen &amp; Treppen</button>
+      </div>
+      <div class="projects" id="projectGrid">
+        <button class="project w-big" data-cat="kueche" data-title="Küche mit Kochinsel" data-label="Küchen">
+          <div class="pv"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet"><rect width="300" height="220" fill="#192a24"/><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="30" y="40" width="240" height="34"/><rect x="90" y="120" width="120" height="44"/><circle cx="120" cy="142" r="8" stroke="#8fa89a"/><circle cx="150" cy="142" r="8" stroke="#8fa89a"/></g></svg><span>Demo-Beispiel</span></div>
+          <div class="pt"><h4>Küche mit Kochinsel</h4><span class="cat">Küchen</span></div>
+        </button>
+        <button class="project w-2" data-cat="moebel" data-title="Sideboard" data-label="Möbel">
+          <div class="pv"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet"><rect width="300" height="220" fill="#21352d"/><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="50" y="80" width="200" height="60"/><line x1="117" y1="80" x2="117" y2="140" stroke="#8fa89a"/><line x1="183" y1="80" x2="183" y2="140" stroke="#8fa89a"/><line x1="64" y1="140" x2="64" y2="170"/><line x1="236" y1="140" x2="236" y2="170"/></g></svg><span>Demo-Beispiel</span></div>
+          <div class="pt"><h4>Sideboard</h4><span class="cat">Möbel</span></div>
+        </button>
+        <button class="project w-2" data-cat="tuer" data-title="Haustür" data-label="Türen &amp; Treppen">
+          <div class="pv"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet"><rect width="300" height="220" fill="#192a24"/><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="105" y="20" width="90" height="180"/><rect x="117" y="34" width="66" height="62" stroke="#8fa89a"/><rect x="117" y="106" width="66" height="84" stroke="#8fa89a"/><circle cx="186" cy="110" r="3" fill="#e0b95a"/></g></svg><span>Demo-Beispiel</span></div>
+          <div class="pt"><h4>Haustür</h4><span class="cat">Türen &amp; Treppen</span></div>
+        </button>
+        <button class="project w-2" data-cat="tuer" data-title="Treppe mit Geländer" data-label="Türen &amp; Treppen">
+          <div class="pv"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet"><rect width="300" height="220" fill="#21352d"/><g fill="none" stroke="#e0b95a" stroke-width="2.2"><path d="M30 190 H80 V160 H130 V130 H180 V100 H230 V70 H270"/><path d="M30 160 L270 40" stroke="#8fa89a"/></g></svg><span>Demo-Beispiel</span></div>
+          <div class="pt"><h4>Treppe mit Geländer</h4><span class="cat">Türen &amp; Treppen</span></div>
+        </button>
+        <button class="project w-2" data-cat="moebel" data-title="Regalwand" data-label="Möbel">
+          <div class="pv"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet"><rect width="300" height="220" fill="#192a24"/><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="50" y="30" width="200" height="160"/><line x1="50" y1="83" x2="250" y2="83" stroke="#8fa89a"/><line x1="50" y1="136" x2="250" y2="136" stroke="#8fa89a"/><line x1="150" y1="30" x2="150" y2="190" stroke="#8fa89a"/></g></svg><span>Demo-Beispiel</span></div>
+          <div class="pt"><h4>Regalwand</h4><span class="cat">Möbel</span></div>
+        </button>
+        <button class="project w-2" data-cat="kueche" data-title="Küche in L-Form" data-label="Küchen">
+          <div class="pv"><svg viewBox="0 0 300 220" preserveAspectRatio="xMidYMid meet"><rect width="300" height="220" fill="#21352d"/><g fill="none" stroke="#e0b95a" stroke-width="2"><rect x="50" y="50" width="200" height="34"/><rect x="50" y="50" width="34" height="130"/></g></svg><span>Demo-Beispiel</span></div>
+          <div class="pt"><h4>Küche in L-Form</h4><span class="cat">Küchen</span></div>
+        </button>
+      </div>
+      <p class="demo-note">Alle Projekte sind Platzhalter-Beispiele für diesen Entwurf — echte Referenzfotos ersetzen sie beim finalen Launch.</p>
+    </div>
+  </section>
+
+  <dialog id="pdlg" aria-labelledby="dtitle">
+    <button class="d-close" id="dclose" aria-label="Schließen">✕</button>
+    <div class="d-art" id="dart"></div>
+    <div class="d-body">
+      <h3 id="dtitle"></h3>
+      <p class="d-cat" id="dcat"></p>
+      <p class="d-note">Dies ist ein Demo-Platzhalter. Hier würden später ein großes Foto und eine kurze Beschreibung des echten Projekts stehen.</p>
+    </div>
+  </dialog>
+</div>
+
+<!-- ================= KONTAKT ================= -->
+<div class="page" data-page="kontakt">
+  <section class="page-top">
+    <div class="wrap connect-grid">
+      <div class="connect-info reveal">
+        <h1>Kontakt</h1>
+        <p>Fragen zu Küchen, Möbeln, Türen oder Treppen? Rufen Sie an, schreiben Sie eine E-Mail oder nutzen Sie die kurze Anfrage rechts.</p>
+        <ul class="info-list">
+          <li><span class="label">Adresse</span><span>Schreinerei Behrendt, Hubert Behrendt<br>Geratsreute 5, 88273 Fronreute</span></li>
+          <li><span class="label">Telefon</span><span>07505 1375</span></li>
+          <li><span class="label">Fax</span><span>07505 1374</span></li>
+          <li><span class="label">E-Mail</span><span>schreinerei-behrendt@geratsreute.de</span></li>
+        </ul>
+        <p class="find">So finden Sie uns: Geratsreute ist ein Teilort der Gemeinde Fronreute und liegt zwischen Fronhofen und Baienbach.</p>
+      </div>
+      <div class="form-card reveal">
+        <div class="stepper"><div class="step-dot"><i id="dot1"></i></div><div class="step-dot"><i id="dot2"></i></div><div class="step-dot"><i id="dot3"></i></div></div>
+
+        <div class="f-step active" id="step1">
+          <label>Worum geht es?</label>
+          <div class="chip-grid" id="chipGrid">
+            <button type="button" class="chip" data-v="Küche">Küche</button>
+            <button type="button" class="chip" data-v="Möbel">Möbel</button>
+            <button type="button" class="chip" data-v="Türen oder Treppen">Türen oder Treppen</button>
+            <button type="button" class="chip" data-v="Planung und Beratung">Planung und Beratung</button>
+          </div>
+          <div class="f-actions"><span></span><button class="btn-sm" id="toStep2" disabled>Weiter</button></div>
+        </div>
+
+        <div class="f-step" id="step2">
+          <label for="cname">Name</label>
+          <input id="cname" type="text" placeholder="Ihr Name">
+          <label for="cphone">Telefon oder E-Mail</label>
+          <input id="cphone" type="text" placeholder="Wie erreichen wir Sie?">
+          <label for="cmsg">Kurz zu Ihrem Vorhaben</label>
+          <textarea id="cmsg" rows="3" placeholder="z. B. Raum, Wünsche, Zeitrahmen …"></textarea>
+          <div class="f-actions"><button class="btn-sm ghost" id="toStep1">Zurück</button><button class="btn-sm" id="toStep3">Weiter</button></div>
+        </div>
+
+        <div class="f-step" id="step3">
+          <div class="summary-box" id="summaryBox"></div>
+          <div class="f-actions"><button class="btn-sm ghost" id="backStep2">Zurück</button><button class="btn-sm" id="submitForm">Anfrage senden</button></div>
+        </div>
+
+        <div class="f-step" id="stepDone">
+          <div class="success">
+            <div class="mark">✓</div>
+            <h3 style="margin-bottom:8px;">Anfrage erfasst</h3>
+            <p style="color:var(--linen-dim);font-size:0.9rem;">Dies ist ein Demo-Formular — in der echten Version würde die Anfrage jetzt direkt bei der Schreinerei Behrendt ankommen.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© Schreinerei Behrendt, Hubert Behrendt, Fronreute-Geratsreute</span>
+    <span class="foot-nav"><a href="#startseite">Startseite</a> · <a href="#leistungen">Leistungen</a> · <a href="#projekte">Projekte</a> · <a href="#kontakt">Kontakt</a></span>
+    <span>Impressum · Datenschutz</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- Router: vier echte Unterseiten ---------- */
+const PAGES = {
+  startseite: 'Schreinerei Behrendt — Küchen, Möbel, Türen und Treppen',
+  leistungen: 'Leistungen — Schreinerei Behrendt',
+  projekte: 'Projekte — Schreinerei Behrendt',
+  kontakt: 'Kontakt — Schreinerei Behrendt'
+};
+const navLinks = document.querySelectorAll('#mainnav ul a');
+function route(){
+  let h = location.hash.replace('#','');
+  if(!PAGES[h]) h = 'startseite';
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active', p.dataset.page === h));
+  navLinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href') === '#'+h));
+  document.title = PAGES[h];
+  window.scrollTo({top:0, left:0, behavior:'instant'});
+}
+window.addEventListener('hashchange', route);
+route();
+
+/* ---------- Reveal ---------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- Parallax Hero ---------- */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const stairsBg = document.getElementById('stairsbg');
+if(!reduceMotion){
+  window.addEventListener('scroll', ()=>{
+    const y = window.scrollY;
+    stairsBg.style.transform = `translateY(${y*0.16}px) scale(${1+Math.min(y/4500,0.06)})`;
+  }, {passive:true});
+}
+
+/* ---------- Küchenform-Auswahl ---------- */
+const KF = {
+  einzeilig:{rects:[[30,30,240,34]], cap:'Einzeilig: Alles entlang einer Wand — platzsparend und übersichtlich, gut für schmale Räume.'},
+  zweizeilig:{rects:[[30,30,240,34],[30,136,240,34]], cap:'Zweizeilig: Zwei gegenüberliegende Zeilen mit Laufweg dazwischen — viel Stauraum.'},
+  l:{rects:[[30,30,240,34],[30,30,34,140]], cap:'L-Form: Zwei Wände im Winkel — nutzt die Ecke und lässt Platz für einen Essplatz.'},
+  u:{rects:[[30,30,240,34],[30,30,34,140],[236,30,34,140]], cap:'U-Form: Drei Seiten, kurze Wege und viel Arbeitsfläche — für größere Räume.'},
+  insel:{rects:[[30,30,240,34],[90,104,120,40]], cap:'Mit Insel: Zeile an der Wand plus freistehender Block — zum Kochen, Arbeiten und Zusammensitzen.'}
+};
+const kfG = document.getElementById('kfG');
+const kfCap = document.getElementById('kfCap');
+function renderKF(key){
+  const d = KF[key];
+  kfG.innerHTML = d.rects.map(r=>`<rect class="c" x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}"/>`).join('');
+  kfCap.textContent = d.cap;
+  document.querySelectorAll('.kf-btn').forEach(b=>b.classList.toggle('active', b.dataset.k===key));
+}
+document.querySelectorAll('.kf-btn').forEach(b=> b.addEventListener('click', ()=> renderKF(b.dataset.k)));
+renderKF('l');
+
+/* ---------- Planungs-Stepper ---------- */
+const STEPS = [
+  {t:'Gespräch und Wünsche', x:'Sie erzählen, was Sie sich vorstellen — für Küche, Möbel, Türen oder Treppen. Die Schreinerei hört zu und nimmt die Gegebenheiten auf.'},
+  {t:'Planung und Entwurf', x:'Aus Ihren Wünschen wird ein konkreter Vorschlag: passend zum Raum, zum Stil und zu Ihrem Alltag.'},
+  {t:'Fertigung in der Werkstatt', x:'Ihr Stück entsteht in der eigenen Werkstatt in Geratsreute — als individuelles Einzelstück.'},
+  {t:'Einbau und Übergabe', x:'Das fertige Stück wird bei Ihnen eingebaut und übergeben, damit Sie sich in Ihrem Zuhause rundum wohlfühlen.'}
+];
+const spTitle = document.getElementById('spTitle');
+const spText = document.getElementById('spText');
+const spBar = document.getElementById('spBar');
+function setStep(i){
+  spTitle.textContent = STEPS[i].t;
+  spText.textContent = STEPS[i].x;
+  spBar.style.width = ((i+1)/STEPS.length*100) + '%';
+  document.querySelectorAll('.sp-tab').forEach((b,idx)=>{
+    b.classList.toggle('active', idx===i);
+    b.setAttribute('aria-selected', idx===i ? 'true' : 'false');
+  });
+}
+document.querySelectorAll('.sp-tab').forEach(b=> b.addEventListener('click', ()=> setStep(+b.dataset.i)));
+setStep(0);
+
+/* ---------- Projekt-Filter + Detailansicht ---------- */
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projects = document.querySelectorAll('.project');
+filterBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    filterBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    projects.forEach(p=> p.classList.toggle('hidden', f !== 'alle' && p.dataset.cat !== f));
+  });
+});
+const dlg = document.getElementById('pdlg');
+projects.forEach(p=>{
+  p.addEventListener('click', ()=>{
+    document.getElementById('dart').innerHTML = p.querySelector('svg').outerHTML;
+    document.getElementById('dtitle').textContent = p.dataset.title;
+    document.getElementById('dcat').innerHTML = p.dataset.label;
+    dlg.showModal();
+  });
+});
+document.getElementById('dclose').addEventListener('click', ()=> dlg.close());
+dlg.addEventListener('click', e=>{ if(e.target === dlg) dlg.close(); });
+
+/* ---------- Mehrstufiges Anfrageformular (Demo) ---------- */
+let chosenType = null;
+const chips = document.querySelectorAll('.chip');
+chips.forEach(c=>{
+  c.addEventListener('click', ()=>{
+    chips.forEach(x=>x.classList.remove('selected'));
+    c.classList.add('selected');
+    chosenType = c.dataset.v;
+    document.getElementById('toStep2').disabled = false;
+  });
+});
+function showStep(id){
+  document.querySelectorAll('.f-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('dot1').style.width = '100%';
+  document.getElementById('dot2').style.width = (id==='step2'||id==='step3'||id==='stepDone') ? '100%':'0%';
+  document.getElementById('dot3').style.width = (id==='step3'||id==='stepDone') ? '100%':'0%';
+}
+function esc(v){ return v.replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+document.getElementById('toStep2').addEventListener('click', ()=> showStep('step2'));
+document.getElementById('toStep1').addEventListener('click', ()=> showStep('step1'));
+document.getElementById('toStep3').addEventListener('click', ()=>{
+  const name = esc(document.getElementById('cname').value || '—');
+  const contact = esc(document.getElementById('cphone').value || '—');
+  const msg = esc(document.getElementById('cmsg').value || '—');
+  document.getElementById('summaryBox').innerHTML =
+    `<strong>Anliegen:</strong> ${esc(chosenType || '—')}<br><strong>Name:</strong> ${name}<br><strong>Kontakt:</strong> ${contact}<br><strong>Nachricht:</strong> ${msg}`;
+  showStep('step3');
+});
+document.getElementById('backStep2').addEventListener('click', ()=> showStep('step2'));
+document.getElementById('submitForm').addEventListener('click', ()=> showStep('stepDone'));
+</script>
+
+</body>
+</html>
